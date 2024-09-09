@@ -21,24 +21,42 @@ let verifyPass = (pass) => {
 };
 let button = document.getElementById("btnSubmit");
 button.addEventListener("click", () => {
-  let name = document.querySelector("#name").value;
-  let email = document.querySelector("#email").value;
-  let phone = document.querySelector("#phone").value;
-  let pass = document.getElementById("pass").value;
-  if (name.length < 4 || !validateName()) {
+  let name = document.getElementById("name");
+  let email = document.getElementById("email");
+  let phone = document.getElementById("phone");
+  let pass = document.getElementById("pass");
+  console.log(name.value)
+  if (name.value.length < 4 || !validateName(name.value)) {
     alert("Invalid Name");
   }
-  if (!validateEmail(email)) {
+  if (!validateEmail(email.value)) {
     alert("Invalid email");
   }
-  if (phone.length < 10) {
+  if (phone.value.length < 10) {
     alert("Invalid Phone Number");
   }
-  if (!verifyPass(pass)) {
+  if (!verifyPass(pass.value)) {
     alert("Invalid Password");
   }
-    name = "";
-    email = "";
-    phone = "";
-    pass = "";
+
+  let newUser = {
+    name: name.value,
+    email: email.value,
+    phone: phone.value,
+    pass: pass.value
+  };
+  console.log(name.value)
+  fetch('http://localhost/ku_24_lab_backend/Ass2_backend/get.php', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newUser)
+  }).then(res=>res.json()).then(data=>{
+    console.log(data)
+    name.value = "";
+    email.value = "";
+    phone.value = "";
+    pass.value = "";
+  })
 });
